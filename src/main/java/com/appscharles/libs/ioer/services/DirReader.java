@@ -27,6 +27,13 @@ public class DirReader {
                 .collect(Collectors.toList());
     }
 
+    public static List<File> getRegularDirectories(File dir) throws IOException {
+        return Files.walk(Paths.get(dir.getPath()))
+                .filter(Files::isDirectory)
+                .map(Path::toFile)
+                .collect(Collectors.toList());
+    }
+
     /**
      * Gets files.
      *
