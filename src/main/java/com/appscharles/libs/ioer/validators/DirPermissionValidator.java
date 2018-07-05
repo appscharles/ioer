@@ -6,15 +6,16 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * The type File permission validator.
+ * The type Dir permission validator.
  */
 public class DirPermissionValidator {
 
     /**
-     * Is replacable boolean.
+     * Is writable boolean.
      *
      * @param file the file
      * @return the boolean
+     * @throws IOException the io exception
      */
     public static Boolean isWritable(File file) throws IOException {
         for (File foundFile : DirReader.getFiles(file)) {
