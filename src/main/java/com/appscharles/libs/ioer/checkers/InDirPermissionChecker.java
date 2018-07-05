@@ -37,9 +37,13 @@ public class InDirPermissionChecker {
                         continue;
                     }
                 }
-            }
-            if (FilePermissionValidator.isWritable(file) == false){
-                throw new IOException("File is not writable: " + file.getPath());
+                if (FilePermissionValidator.isWritable(file) == false){
+                    throw new IOException("File is not writable: " + file.getPath());
+                }
+            } else {
+                if (FilePermissionValidator.isWritable(file) == false){
+                    throw new IOException("File is not writable: " + file.getPath());
+                }
             }
         }
     }

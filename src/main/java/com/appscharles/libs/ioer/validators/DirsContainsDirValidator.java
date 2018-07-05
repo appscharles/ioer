@@ -20,7 +20,7 @@ public class DirsContainsDirValidator {
     public static Boolean contains(File dir, List<File> inDirs) throws IOException {
         for (File inDir : inDirs) {
             if (dir.getAbsolutePath().equals(inDir.getAbsolutePath())){
-                continue;
+                return true;
             }
             if (DirContainsDirValidator.contains(dir, inDir)){
                 return true;
