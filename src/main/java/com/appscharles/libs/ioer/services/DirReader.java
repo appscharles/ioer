@@ -53,4 +53,17 @@ public class DirReader {
                 .map(Path::toFile)
                 .collect(Collectors.toList());
     }
+
+    /**
+     * Gets files.
+     *
+     * @param dir the dir
+     * @return the files
+     * @throws IOException the io exception
+     */
+    public static List<File> getFilesWithoutRoot(File dir) throws IOException {
+        return Files.walk(Paths.get(dir.getPath()))
+                .map(Path::toFile).filter(file-> !file.getAbsolutePath().equals(dir.getAbsolutePath()))
+                .collect(Collectors.toList());
+    }
 }
