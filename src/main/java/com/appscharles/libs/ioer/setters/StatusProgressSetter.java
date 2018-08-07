@@ -19,4 +19,15 @@ public class StatusProgressSetter {
             statusProgress.setProgress(progressRounded.doubleValue());
         }
     }
+
+    public static void set(StatusProgress statusProgress, String status, Long weightFile, Long downloadedBytes) {
+        if (statusProgress != null) {
+            statusProgress.setStatus(status);
+            double progress = (downloadedBytes +0.0) / weightFile;
+            if (progress <= 100.0){
+                BigDecimal progressRounded = new BigDecimal(String.valueOf(progress)).setScale(2, BigDecimal.ROUND_HALF_UP);
+                statusProgress.setProgress(progressRounded.doubleValue());
+            }
+        }
+    }
 }

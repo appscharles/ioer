@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.appscharles.libs'
-version '1.0.0.0-dev15'
+version '1.0.0.0-dev17'
 
 sourceCompatibility = 1.8
 
@@ -19,6 +19,9 @@ repositories {
 }
 
 dependencies {
+    compile group: 'net.lingala.zip4j', name: 'zip4j', version: '1.3.2'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.0'
     testCompile group: 'com.appscharles.libs', name: 'generator', version: '1.0.0.0-dev4'
+    testCompile group: 'com.appscharles.libs', name: 'logger', version: '1.0.0.0-dev18'
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
