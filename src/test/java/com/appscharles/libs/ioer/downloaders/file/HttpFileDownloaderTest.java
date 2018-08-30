@@ -47,13 +47,12 @@ public class HttpFileDownloaderTest extends TestCase {
         LoggerConfigurator.config(new Log4j2Console(Level.DEBUG));
         File file = this.temp.newFile("file");
         StatusProgress statusProgress = new StatusProgress();
-        IFileDownloader downloader = new HttpFileDownloader(new URL("https://github.com/appscharles/libs_browser/releases/download/Chrome.portable.68.0/chrome.zip"), 3);
+        IFileDownloader downloader = new HttpFileDownloader(new URL("https://bitbucket.org/appscharles/resources_java/downloads/Chrome_68.0_test.zip"), 3);
        ((IStatusProgressable) downloader).setStatusProgress(statusProgress);
         statusProgress.progressProperty().addListener((args, oldVal, newVal) ->{
             System.out.println(newVal);
         });
-       // downloader.download(file);
-        System.out.println("OK");
+        downloader.download(file);
     }
 
     @Test

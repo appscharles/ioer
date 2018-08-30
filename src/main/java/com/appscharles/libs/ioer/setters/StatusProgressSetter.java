@@ -30,4 +30,15 @@ public class StatusProgressSetter {
             }
         }
     }
+
+    public static void set(StatusProgress statusProgress, String status, Integer size, Integer soFar) {
+        if (statusProgress != null) {
+            statusProgress.setStatus(status);
+            double progress = (soFar +0.0) / size;
+            if (progress <= 100.0){
+                BigDecimal progressRounded = new BigDecimal(String.valueOf(progress)).setScale(2, BigDecimal.ROUND_HALF_UP);
+                statusProgress.setProgress(progressRounded.doubleValue());
+            }
+        }
+    }
 }

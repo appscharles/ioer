@@ -8,11 +8,9 @@ import com.appscharles.libs.ioer.setters.StatusProgressSetter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
+import java.net.URLConnection;
 
 /**
  * The type Http file downloader.
@@ -75,7 +73,9 @@ public class HttpFileDownloader implements IFileDownloader, IStatusProgressable 
         if (toFile.getParentFile().exists() == false){
             toFile.getParentFile().mkdirs();
         }
-        try (BufferedInputStream in = new BufferedInputStream(this.url.openStream());
+        URLConnection urlConnection = this.url.openConnection();
+        urlConnection.setReadTimeout(5000);
+        try (BufferedInputStream in = new BufferedInputStream(urlConnection.getInputStream());
              FileOutputStream fos = new FileOutputStream(toFile)) {
             int size = 1024;
             byte dataBuffer[] = new byte[size];
@@ -84,7 +84,7 @@ public class HttpFileDownloader implements IFileDownloader, IStatusProgressable 
             while ((bytesRead = in.read(dataBuffer, 0, size)) != -1) {
                 downloadBytes += size;
                 fos.write(dataBuffer, 0, bytesRead);
-                StatusProgressSetter.set(this.statusProgress, this.url.toString(), this.fileWeight, downloadBytes);
+                StatusProgressSetter.set(this.statusProgress, toFile.getAbsolutePath(), this.fileWeight, downloadBytes);
             }
         }
     }

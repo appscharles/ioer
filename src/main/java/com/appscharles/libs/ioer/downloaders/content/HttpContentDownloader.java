@@ -35,16 +35,23 @@ public class HttpContentDownloader implements IContentDownloader {
         StringBuilder sB = new StringBuilder();
         try {
             int responseCode = this.httpURLConnection.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK) {
+            if (responseCode >= 200 && responseCode <  400) {
                 try(InputStream is = this.httpURLConnection.getInputStream();
-                        BufferedReader bR = new BufferedReader(new InputStreamReader(is))){
+                        BufferedReader bR = new BufferedReader(new InputStreamReader(is, "UTF-8"))){
                     String line;
                     while ((line = bR.readLine()) != null) {
                         sB.append(line);
                     }
                 }
             } else {
-                throw new IoerException("Could not get content from url: "+ this.url.toString());
+                try(InputStream is = this.httpURLConnection.getErrorStream();
+                    BufferedReader bR = new BufferedReader(new InputStreamReader(is, "UTF-8"))){
+                    String line;
+                    while ((line = bR.readLine()) != null) {
+                        sB.append(line);
+                    }
+                }
+                throw new IoerException(this.httpURLConnection.getResponseCode() + " " + this.httpURLConnection.getResponseMessage() + ">>>RESPONSE_HTML>>>" + sB.toString());
             }
         } catch (IOException e) {
            throw new IoerException(e);
