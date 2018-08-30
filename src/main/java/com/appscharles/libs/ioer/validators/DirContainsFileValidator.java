@@ -17,7 +17,7 @@ public class DirContainsFileValidator {
      * @throws IOException the io exception
      */
     public static Boolean contains(File file, File inDir) throws IOException {
-        if (file.getAbsolutePath().equals(inDir.getAbsolutePath())){
+        if (file.getAbsolutePath().equalsIgnoreCase(inDir.getAbsolutePath())){
             throw new IOException("In dir path is the same as file path: " + file.getAbsolutePath());
         }
         if (inDir.isDirectory()== false){
@@ -28,6 +28,6 @@ public class DirContainsFileValidator {
         }
         String pathFile = file.getAbsolutePath();
         String pathInDirWithSeparator = inDir.getAbsolutePath() + File.separator;
-        return pathFile.contains(pathInDirWithSeparator);
+        return pathFile.toLowerCase().contains(pathInDirWithSeparator.toLowerCase());
     }
 }
