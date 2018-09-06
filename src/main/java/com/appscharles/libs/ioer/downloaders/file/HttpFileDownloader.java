@@ -58,15 +58,22 @@ public class HttpFileDownloader implements IFileDownloader, IStatusProgressable 
     }
 
     private void downloadWithAttempts(File toFile) throws IoerException {
+        Exception exception = null;
         for (Integer i = 0; i < this.attempts; i++) {
             try {
                 fileDownload(toFile);
                 return;
             } catch (Exception e) {
+                exception = e;
                 logger.debug(e, e);
             }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new IoerException(e);
+            }
         }
-        throw new IoerException("Can not download file: " + this.url.toString());
+        throw new IoerException("Can not download file: " + this.url.toString(), exception);
     }
 
     private void fileDownload(File toFile) throws IOException {
