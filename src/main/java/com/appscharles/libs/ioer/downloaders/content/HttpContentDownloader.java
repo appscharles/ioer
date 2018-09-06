@@ -65,17 +65,21 @@ public class HttpContentDownloader implements IContentDownloader {
             if (responseCode >= 200 && responseCode <  400) {
                 try(InputStream is = httpURLConnection.getInputStream();
                     BufferedReader bR = new BufferedReader(new InputStreamReader(is, "UTF-8"))){
-                    String line;
-                    while ((line = bR.readLine()) != null) {
-                        sB.append(line);
+                    int BUFFER_SIZE=1024;
+                    char[] buffer = new char[BUFFER_SIZE];
+                    int charsRead = 0;
+                    while ( (charsRead  = bR.read(buffer, 0, BUFFER_SIZE)) != -1) {
+                        sB.append(buffer, 0, charsRead);
                     }
                 }
             } else {
                 try(InputStream is = httpURLConnection.getErrorStream();
                     BufferedReader bR = new BufferedReader(new InputStreamReader(is, "UTF-8"))){
-                    String line;
-                    while ((line = bR.readLine()) != null) {
-                        sB.append(line);
+                    int BUFFER_SIZE=1024;
+                    char[] buffer = new char[BUFFER_SIZE];
+                    int charsRead = 0;
+                    while ( (charsRead  = bR.read(buffer, 0, BUFFER_SIZE)) != -1) {
+                        sB.append(buffer, 0, charsRead);
                     }
                 }
                 throw new IoerException(httpURLConnection.getResponseCode() + " " + httpURLConnection.getResponseMessage() + ">>>RESPONSE_HTML>>>" + sB.toString());
