@@ -18,8 +18,15 @@ import java.net.URL;
  */
 public class HttpContentDownloaderTest {
 
-    @Test(expected = IoerException.class)
+    @Test
     public void shouldGetContent() throws IOException, IoerException {
+        URL url = new URL("http://hurtowniagalanter.pl/index.php?controller=product&id_product=1394#/");
+        String html = new HttpContentDownloader(url).setAttempts(3).getContent();
+        Assert.assertTrue(html.contains("</body>"));
+    }
+
+    @Test(expected = IoerException.class)
+    public void shouldNotGetContent() throws IOException, IoerException {
         URL url = new URL("http://hurtowniagalanter.pl/index.php?controller=product&id_product=235#/");
         String html = new HttpContentDownloader(url).setAttempts(3).getContent();
         Assert.assertTrue(html.contains("</body>"));

@@ -60,8 +60,11 @@ public class HttpContentDownloader implements IContentDownloader {
         StringBuilder sB = new StringBuilder();
         try {
             HttpURLConnection httpURLConnection = (HttpURLConnection) this.url.openConnection();
+            httpURLConnection.setReadTimeout(10000);
+            httpURLConnection.setConnectTimeout(60000);
             httpURLConnection.setRequestMethod("GET");
-            int responseCode = httpURLConnection.getResponseCode();
+            final int responseCode = httpURLConnection.getResponseCode();
+            final String responseMessage = httpURLConnection.getResponseMessage();
             if (responseCode >= 200 && responseCode <  400) {
                 try(InputStream is = httpURLConnection.getInputStream();
                     BufferedReader bR = new BufferedReader(new InputStreamReader(is, "UTF-8"))){
@@ -82,10 +85,10 @@ public class HttpContentDownloader implements IContentDownloader {
                         sB.append(buffer, 0, charsRead);
                     }
                 }
-                throw new IoerException(httpURLConnection.getResponseCode() + " " + httpURLConnection.getResponseMessage() + ">>>RESPONSE_HTML>>>" + sB.toString());
+                throw new IoerException(responseCode + " " + responseMessage + ">>>RESPONSE_HTML>>>" + sB.toString());
             }
         } catch (IOException e) {
-           throw new IoerException(e);
+           throw new IoerException("Failed get content from url: " + this.url.toString(), e);
         }
         return sB.toString();
     }

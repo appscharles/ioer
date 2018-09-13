@@ -81,7 +81,8 @@ public class HttpFileDownloader implements IFileDownloader, IStatusProgressable 
             toFile.getParentFile().mkdirs();
         }
         URLConnection urlConnection = this.url.openConnection();
-        urlConnection.setReadTimeout(5000);
+        urlConnection.setReadTimeout(10000);
+        urlConnection.setConnectTimeout(60000);
         try (BufferedInputStream in = new BufferedInputStream(urlConnection.getInputStream());
              FileOutputStream fos = new FileOutputStream(toFile)) {
             int size = 1024;
