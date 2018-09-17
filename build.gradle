@@ -9,7 +9,9 @@ version '1.0.0.0-dev30'
 
 sourceCompatibility = 1.8
 
+
 apply from: 'gradle/BintrayPublisher.gradle'
+apply from: 'gradle/UTF8Encoder.gradle'
 
 repositories {
     mavenCentral()
