@@ -17,6 +17,9 @@ public class DirDeleter {
      * @throws IOException the io exception
      */
     public static void delete(File dir) throws IOException {
+        if (dir.exists() == false){
+            return;
+        }
         Files.walk(dir.toPath())
                 .map(Path::toFile)
                 .sorted((o1, o2) -> -o1.compareTo(o2))
