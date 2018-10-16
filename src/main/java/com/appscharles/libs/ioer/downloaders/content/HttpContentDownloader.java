@@ -5,7 +5,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -20,16 +19,19 @@ public class HttpContentDownloader implements IContentDownloader {
 
     private URL url;
 
-    private Integer attempts = 1;
+    private Integer attempts;
+
+    private long delayAttempt;
 
     /**
      * Instantiates a new Http content downloader.
      *
      * @param url the url
-     * @throws IOException the io exception
      */
-    public HttpContentDownloader(URL url) throws IOException {
+    public HttpContentDownloader(URL url) {
         this.url = url;
+        this.attempts = 1;
+        this.delayAttempt = 5000;
     }
 
     @Override
@@ -47,7 +49,7 @@ public class HttpContentDownloader implements IContentDownloader {
                 logger.debug(e, e);
             }
             try {
-                Thread.sleep(1000);
+                Thread.sleep(this.delayAttempt);
             } catch (InterruptedException e) {
                 throw new IoerException(e);
             }
@@ -60,7 +62,7 @@ public class HttpContentDownloader implements IContentDownloader {
         StringBuilder sB = new StringBuilder();
         try {
             HttpURLConnection httpURLConnection = (HttpURLConnection) this.url.openConnection();
-            httpURLConnection.setReadTimeout(10000);
+            httpURLConnection.setReadTimeout(60000);
             httpURLConnection.setConnectTimeout(60000);
             httpURLConnection.setRequestMethod("GET");
             final int responseCode = httpURLConnection.getResponseCode();
@@ -87,7 +89,7 @@ public class HttpContentDownloader implements IContentDownloader {
                 }
                 throw new IoerException(responseCode + " " + responseMessage + ">>>RESPONSE_HTML>>>" + sB.toString());
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
            throw new IoerException("Failed get content from url: " + this.url.toString(), e);
         }
         return sB.toString();
@@ -101,6 +103,17 @@ public class HttpContentDownloader implements IContentDownloader {
      */
     public HttpContentDownloader setAttempts(Integer attempts) {
         this.attempts = attempts;
+        return this;
+    }
+
+    /**
+     * Sets delay attempt.
+     *
+     * @param delayAttempt the delay attempt
+     * @return the delay attempt
+     */
+    public HttpContentDownloader setDelayAttempt(long delayAttempt) {
+        this.delayAttempt = delayAttempt;
         return this;
     }
 }

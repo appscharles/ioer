@@ -5,10 +5,9 @@ plugins {
 }
 
 group 'com.appscharles.libs'
-version '1.0.0.0-dev33'
+version '1.0.0.0-dev34'
 
 sourceCompatibility = 1.8
-
 
 apply from: 'gradle/BintrayPublisher.gradle'
 apply from: 'gradle/UTF8Encoder.gradle'

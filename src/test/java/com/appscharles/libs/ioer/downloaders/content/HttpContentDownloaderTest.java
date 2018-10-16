@@ -27,7 +27,7 @@ public class HttpContentDownloaderTest {
 
     @Test(expected = IoerException.class)
     public void shouldNotGetContent() throws IOException, IoerException {
-        URL url = new URL("http://hurtowniagalanter.pl/index.php?controller=product&id_product=235#/");
+        URL url = new URL("http://hurtowniagalanter.pl/torby-meskie/1274-torba-meska-skorzana-do-pracy-abruzzo-2a21.html#/");
         String html = new HttpContentDownloader(url).setAttempts(3).getContent();
         Assert.assertTrue(html.contains("</body>"));
     }
