@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.appscharles.libs'
-version '1.0.0.0-dev34'
+version '1.0.0.0-dev35'
 
 sourceCompatibility = 1.8
 

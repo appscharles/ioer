@@ -5,6 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -89,7 +90,7 @@ public class HttpContentDownloader implements IContentDownloader {
                 }
                 throw new IoerException(responseCode + " " + responseMessage + ">>>RESPONSE_HTML>>>" + sB.toString());
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
            throw new IoerException("Failed get content from url: " + this.url.toString(), e);
         }
         return sB.toString();
