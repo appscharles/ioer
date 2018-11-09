@@ -1,6 +1,7 @@
 package com.appscharles.libs.ioer.downloaders.content;
 
 import com.appscharles.libs.ioer.exceptions.IoerException;
+import com.appscharles.libs.ioer.exceptions.IoerParameterConsumer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,6 +24,8 @@ public class HttpContentDownloader implements IContentDownloader {
     private Integer attempts;
 
     private long delayAttempt;
+
+    private IoerParameterConsumer<HttpURLConnection, IoerException> parameterConsumer;
 
     /**
      * Instantiates a new Http content downloader.
@@ -66,6 +69,9 @@ public class HttpContentDownloader implements IContentDownloader {
             httpURLConnection.setReadTimeout(60000);
             httpURLConnection.setConnectTimeout(60000);
             httpURLConnection.setRequestMethod("GET");
+            if (this.parameterConsumer != null){
+                this.parameterConsumer.accept(httpURLConnection);
+            }
             final int responseCode = httpURLConnection.getResponseCode();
             final String responseMessage = httpURLConnection.getResponseMessage();
             if (responseCode >= 200 && responseCode <  400) {
@@ -116,5 +122,14 @@ public class HttpContentDownloader implements IContentDownloader {
     public HttpContentDownloader setDelayAttempt(long delayAttempt) {
         this.delayAttempt = delayAttempt;
         return this;
+    }
+
+    /**
+     * Setter for property 'parameterConsumer'.
+     *
+     * @param parameterConsumer Value to set for property 'parameterConsumer'.
+     */
+    public void setParameterConsumer(IoerParameterConsumer<HttpURLConnection, IoerException> parameterConsumer) {
+        this.parameterConsumer = parameterConsumer;
     }
 }
